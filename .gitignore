@@ -6,6 +6,7 @@
 .vs/
 .vscode/
 node_modules/
+wwwroot/dist/
 # dotenv files
 .env
 

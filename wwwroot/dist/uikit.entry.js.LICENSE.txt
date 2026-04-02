@@ -1,5 +1,0 @@
-/*! UIkit 3.25.14 | https://www.getuikit.com | (c) 2014 - 2026 YOOtheme | MIT License */
-
-/*! uikit */
-
-/*! uikit/dist/js/uikit-icons */
