@@ -1,0 +1,29 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "target": "ES6",
+        "ignoreDeprecations": "6.0",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "outDir": "dist",
+        "rootDir": "./src/",
+        "allowSyntheticDefaultImports": true,
+        "typeRoots": [
+            "./node_modules/@types"
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "components/*": ["src/components/*"],
+            "helpers/*": ["src/helpers/*"],
+            "styles/*": ["src/styles/*"]
+        },
+    },
+    "include": [
+        "src/**/*"
+    ],
+    // "exclude": [
+    //     "node_modules"
+    // ]
+}

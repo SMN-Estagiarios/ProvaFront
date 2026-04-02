@@ -14,6 +14,11 @@
     <div>
             @RenderBody()
     </div>
+
+    <script src="~/dist/runtime.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/izitoast.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/jquery.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/uikit.entry.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

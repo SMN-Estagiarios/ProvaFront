@@ -1,0 +1,30 @@
+{
+    "dependencies": {
+        "apexcharts": "^5.10.4",
+        "izitoast": "^1.4.0",
+        "jquery": "^4.0.0",
+        "jquery-mask-plugin": "^1.14.16",
+        "jquery-ui": "^1.14.2",
+        "jquery-ui-css": "^1.11.5",
+        "treeselectjs": "^0.14.2",
+        "uikit": "^3.25.14"
+    },
+    "devDependencies": {
+        "@types/jquery": "^4.0.0",
+        "@types/jqueryui": "^1.12.24",
+        "css-loader": "^7.1.4",
+        "file-loader": "^6.2.0",
+        "less": "^4.6.4",
+        "less-loader": "^12.3.2",
+        "style-loader": "^4.0.0",
+        "ts-loader": "^9.5.7",
+        "typescript": "^6.0.2",
+        "webpack": "^5.105.4",
+        "webpack-cli": "^7.0.2"
+    },
+    "scripts": {
+        "build": "webpack --mode production",
+        "watch": "webpack --watch --mode development",
+        "clean": "rd /s /q dist"
+    }
+}

@@ -5,3 +5,13 @@
 <div>
     Boa sorte!
 </div>
+
+@section Scripts {
+    <script src="~/dist/vendor.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/home.entry.js" asp-append-version="true"></script>
+    <script>
+        ProvaFront.home.init({message:
+        '@Html.Raw(Model?.Message ?? "Mensagem de model nula, mas init funcionando")'
+});
+    </script>
+}
