@@ -5,8 +5,25 @@ module.exports = {
     mode: "production",
     devtool: "source-map",
     entry: {
-        vendor: ["jquery", "uikit", "izitoast"],
-        home: { import: "./src/pages/home/index.ts", dependOn: "vendor" },
+        izitoast: {
+            import: "./src/components/toast.ts",
+            runtime: "runtime",
+        },
+
+        uikit: {
+            import: "./src/components/uikit.ts",
+            runtime: "runtime",
+        },
+
+        jquery: {
+            import: "./src/components/jquery.ts",
+            runtime: "runtime",
+        },
+
+        home: {
+            import: "./src/pages/home/index.ts",
+            dependOn: ["izitoast", "uikit", "jquery"],
+        },
     },
     module: {
         rules: [
@@ -28,7 +45,11 @@ module.exports = {
             styles: path.resolve(__dirname, "src/styles"),
         },
     },
-    optimization: { minimize: true, minimizer: [new TerserPlugin()] },
+    optimization: {
+        runtimeChunk: "single",
+        minimize: true,
+        minimizer: [new TerserPlugin()],
+    },
     output: {
         filename: "[name].entry.js",
         path: path.resolve(__dirname, "wwwroot/dist"),

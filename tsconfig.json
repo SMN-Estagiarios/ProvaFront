@@ -15,9 +15,15 @@
         ],
         "baseUrl": ".",
         "paths": {
-            "components/*": ["src/components/*"],
-            "helpers/*": ["src/helpers/*"],
-            "styles/*": ["src/styles/*"]
+            "components/*": [
+                "src/components/*"
+            ],
+            "helpers/*": [
+                "src/helpers/*"
+            ],
+            "styles/*": [
+                "src/styles/*"
+            ]
         },
     },
     "include": [

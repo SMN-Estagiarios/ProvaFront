@@ -8,6 +8,8 @@ interface IModelHome {
 let model: IModelHome;
 
 export function init(params: IModelHome) {
+    console.log($("#teste").text());
+    alert("home.ts funcionando!");
     model = params;
     console.log("Home init", model);
     if (model.message) Toast.success(model.message);

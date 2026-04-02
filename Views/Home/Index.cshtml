@@ -2,13 +2,15 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div>
+<div id="teste">
     Boa sorte!
+    <span uk-icon="heart"></span>
 </div>
 
 @section Scripts {
     <script src="~/dist/home.entry.js" asp-append-version="true"></script>
     <script>
+        $("#teste").text("Boa sorte alterado via jQuery da section scripts do razor")
         ProvaFront.home.init({message:
         '@Html.Raw(Model?.Message ?? "Mensagem de model nula, mas init funcionando")'
 });
