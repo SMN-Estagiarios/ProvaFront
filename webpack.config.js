@@ -55,5 +55,6 @@ module.exports = {
         path: path.resolve(__dirname, "wwwroot/dist"),
         library: ["ProvaFront", "[name]"],
         libraryTarget: "window",
+        libraryExport: "default",
     },
 };

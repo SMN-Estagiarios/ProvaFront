@@ -4,8 +4,13 @@ namespace ProvaFront.Controllers;
 
 public class HomeController : Controller
 {
-    public IActionResult Index()
+    public async Task<IActionResult> IndexAsync()
     {
-        return View();
+        return await Task.FromResult(View("Index"));
+    }
+
+    public IActionResult ResumoNotasPartial()
+    {
+        return PartialView("_ResumoNotas");
     }
 }

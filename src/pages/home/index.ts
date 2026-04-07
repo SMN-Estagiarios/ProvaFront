@@ -1,18 +1,15 @@
 import "styles/index.less";
 import Toast from "components/toast";
 
-interface IModelHome {
-    message?: string;
-}
-
 let model: IModelHome;
 
-export function init(params: IModelHome) {
-    console.log($("#teste").text());
-    alert("home.ts funcionando!");
-    model = params;
-    console.log("Home init", model);
-    if (model.message) Toast.success(model.message);
-}
+const home = {
+    init: (params: IModelHome) => {
+        model = params;
+        console.log($("#teste").text());
+        console.log("Home init", model);
+        Toast.success("Home inicializada!");
+    }
+};
 
-export default { init };
+export default home;

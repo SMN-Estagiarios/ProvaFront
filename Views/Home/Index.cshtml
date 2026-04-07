@@ -1,4 +1,6 @@
-﻿@{
+﻿@using ProvaFront.Controllers
+@using ProvaFront.Extensions
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -9,10 +11,14 @@
 
 @section Scripts {
     <script src="~/dist/home.entry.js" asp-append-version="true"></script>
-    <script>
-        $("#teste").text("Boa sorte alterado via jQuery da section scripts do razor")
-        ProvaFront.home.init({message:
-        '@Html.Raw(Model?.Message ?? "Mensagem de model nula, mas init funcionando")'
-});
-    </script>
+<script>
+    ProvaFront.home.init({
+        urls: {
+            index: '@Url.Action(nameof(HomeController.IndexAsync).ActionName(),
+            nameof(HomeController).ControllerName())',
+            partial: '@Url.Action(nameof(HomeController.ResumoNotasPartial).ActionName(),
+            nameof(HomeController).ControllerName())'
+        }
+    });
+</script>
 }
