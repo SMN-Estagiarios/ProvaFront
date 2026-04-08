@@ -1,0 +1,21 @@
+.loading-container {
+    width: 100%;
+    min-height: 100%;
+    position: fixed;
+    z-index: 9999;
+    background-color: rgba(1, 1, 1, 0.5);
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.loading-container .content-message {
+    margin-top: 20px;
+    font-weight: 500;
+}
+
+.loading-container [uk-spinner] {
+    stroke: whitesmoke !important;
+    color: antiquewhite !important;
+}

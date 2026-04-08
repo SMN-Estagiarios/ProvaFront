@@ -1,15 +1,22 @@
 import "styles/index.less";
-import Toast from "components/toast";
+import 'uikitcss';
+import UIkit from 'uikit';
+import Icons from 'uikiticonsjs';
+import toast from 'components/toast';
+
+UIkit.use(Icons);
+
+interface IModelHome {
+    urls: {
+        index: string;
+        partial: string;
+    };
+}
 
 let model: IModelHome;
 
-const home = {
-    init: (params: IModelHome) => {
-        model = params;
-        console.log($("#teste").text());
-        console.log("Home init", model);
-        Toast.success("Home inicializada!");
-    }
-};
+export function init(params: IModelHome) {
+    model = params;
+}
 
-export default home;
+export {toast}
