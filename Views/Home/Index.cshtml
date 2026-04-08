@@ -1,0 +1,24 @@
+﻿@using ProvaFront.Controllers
+@using ProvaFront.Extensions
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="teste">
+    Boa sorte!
+    <span uk-icon="heart"></span>
+</div>
+
+@section Scripts {
+    <script src="~/dist/home.entry.js" asp-append-version="true"></script>
+<script>
+    ProvaFront.home.init({
+        urls: {
+            index: '@Url.Action(nameof(HomeController.IndexAsync).ActionName(),
+            nameof(HomeController).ControllerName())',
+            partial: '@Url.Action(nameof(HomeController.ResumoNotasPartial).ActionName(),
+            nameof(HomeController).ControllerName())'
+        }
+    });
+</script>
+}

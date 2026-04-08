@@ -1,0 +1,3 @@
+interface IModelHome {
+    urls: IUrls;
+}

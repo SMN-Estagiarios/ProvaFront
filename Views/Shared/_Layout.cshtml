@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ProvaFront</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <partial name="Components/_MenuNavegacao">
+    </header>
+    <div>
+            @RenderBody()
+    </div>
+
+    <script src="~/dist/runtime.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/jquery.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/uikit.entry.js" asp-append-version="true"></script>
+    <script src="~/dist/izitoast.entry.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
