@@ -2,6 +2,7 @@
     "compileOnSave": true,
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
+        "ignoreDeprecations": "6.0",
         "noImplicitAny": false,
         "noEmitOnError": true,
         "removeComments": true,
