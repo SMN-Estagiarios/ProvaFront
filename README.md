@@ -82,19 +82,27 @@ No padrao do Liceu, as URLs sao montadas na View Razor com `@Url.Action(...)` e 
 ### Exemplo de inicializacao esperado na View
 
 ```html
-<script src="~/dist/lancamento.entry.js" asp-append-version="true"></script>
 <script>
-  meuBolso.lancamento.init({
-    urls: {
-      index: '@Url.Action("Index", "Lancamento")',
-      getCadastro: '@Url.Action("Cadastro", "Lancamento")',
-      postCadastro: '@Url.Action("Cadastro", "Lancamento")',
-      getEditar: '@Url.Action("Editar", "Lancamento")',
-      postEditar: '@Url.Action("Editar", "Lancamento")',
-      postExcluir: '@Url.Action("Excluir", "Lancamento")'
-    }
-  });
-</script>
+         ProvaFront.home.init({
+            message: {
+                error: '@TempData["ErrorMessage"]',
+                success: '@TempData["SuccessMessage"]'
+            },
+            urls: {
+                index: '@Url.Action(nameof(OrdemServicoController.Index).ActionName(), nameof(OrdemServicoController).ControllerName())',
+                removerOrdemServico: '@Url.Action(nameof(OrdemServicoController.Excluir).ActionName(), nameof(OrdemServicoController).ControllerName())',
+                getModalCriarOrdemServico: '@Url.Action(nameof(OrdemServicoController.GetModalCriar).ActionName(), nameof(OrdemServicoController).ControllerName())',
+                adicionarOrdemServico: '@Url.Action(nameof(OrdemServicoController.Adicionar).ActionName(), nameof(OrdemServicoController).ControllerName())',
+                buscarItens: '@Url.Action(nameof(EstoqueController.BuscarItens).ActionName(), nameof(EstoqueController).ControllerName())',
+                getModalEditarOrdemServico: '@Url.Action(nameof(OrdemServicoController.GetModalEditar).ActionName(), nameof(OrdemServicoController).ControllerName())',
+                editarOrdemServico: '@Url.Action(nameof(OrdemServicoController.Editar).ActionName(), nameof(OrdemServicoController).ControllerName())',
+                obterDetalhes: '@Url.Action(nameof(OrdemServicoController.ObterDetalhes).ActionName(), nameof(OrdemServicoController).ControllerName())',
+                atualizarStatus: '@Url.Action(nameof(OrdemServicoController.AtualizarStatus).ActionName(), nameof(OrdemServicoController).ControllerName())',
+                getModalImpressao: '@Url.Action(nameof(OrdemServicoController.GetModalImpressao).ActionName(), nameof(OrdemServicoController).ControllerName())'
+            }
+        });
+    </script>
+ 
 ```
 
 ### Contrato minimo de actions para a prova (MVC)
