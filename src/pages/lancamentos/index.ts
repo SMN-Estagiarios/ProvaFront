@@ -230,15 +230,22 @@ function salvarLancamento() {
         observacao: $('#observacao').val()
     };
 
-    $.post(model.urls.cadastrarLancamento, dados)
-        .done(() => {
+    $.ajax({
+        url: model.urls.cadastrarLancamento,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(dados),
+        success: () => {
             Toast.success('Lançamento cadastrado com sucesso!');
             UIkit.modal('#modal-lancamento').hide();
             carregarLancamentos();
-        })
-        .fail((error) => {
-            Toast.error('Erro ao cadastrar lançamento');
-        });
+        },
+        error: (xhr) => {
+            const mensagem = xhr.responseText || 'Erro ao cadastrar lançamento';
+            console.error('Erro ao salvar lançamento:', mensagem);
+            Toast.error(mensagem);
+        }
+    });
 }
 
 export const abrirModalCadastro = () => {
@@ -255,5 +262,5 @@ export const abrirModalCadastro = () => {
         });
 };
 
-(window as any).ProvaFront = (window as any).ProvaFront || {};
-(window as any).ProvaFront.lancamentos = { init, carregarLancamentos, abrirModalCadastro };
+// (window as any).ProvaFront = (window as any).ProvaFront || {};
+// (window as any).ProvaFront.lancamentos = { init, carregarLancamentos, abrirModalCadastro };
