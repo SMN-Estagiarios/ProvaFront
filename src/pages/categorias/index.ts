@@ -7,7 +7,7 @@ import $ from "components/jquery";
 UIkit.use(Icons);
 
 export const init = () => {
-    console.log('Categorias initialized');
+    console.log('Categorias inicializada');
 };
 
 init();

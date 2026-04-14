@@ -7,7 +7,10 @@
 <div class="uk-container">
     <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
         <h1 class="uk-margin-remove">Gestão de Lançamentos</h1>
-        <button class="uk-button uk-button-primary" id="btn-novo-lancamento">Novo Lançamento</button>
+        <a class="uk-button uk-button-primary" id="btn-novo-lancamento"
+            onclick="ProvaFront.lancamentos.abrirModalCadastro()"
+            >Novo Lançamento
+        </a>
     </div>
 
     <div class="uk-card uk-card-default uk-card-body uk-margin-bottom">
@@ -69,13 +72,19 @@
     </ul>
 </div>
 
+<div id="containerModalAdicionarLancamento"></div>
+
 @section Scripts {
     <script src="~/dist/lancamentos.entry.js" asp-append-version="true"></script>
 
      <script>
         ProvaFront.lancamentos.init({
             urls: {
-                buscarLancamentos: '/gestao/lancamentos/api/listar',
+                buscarLancamentos: '@Url.Action(nameof(LancamentosController.Listar).ActionName(), nameof(LancamentosController).ControllerName())',
+                listarCategorias: '@Url.Action(nameof(CategoriasController.Listar).ActionName(), nameof(CategoriasController).ControllerName())',
+                abrirModalCadastro: '@Url.Action(nameof(LancamentosController.AbrirModalCadastro).ActionName(), nameof(LancamentosController).ControllerName())',
+                listarContas: '@Url.Action(nameof(ContasController.Listar).ActionName(), nameof(ContasController).ControllerName())',
+                cadastrarLancamento: '@Url.Action(nameof(LancamentosController.Cadastrar).ActionName(), nameof(LancamentosController).ControllerName())',
             }
         });
     </script>

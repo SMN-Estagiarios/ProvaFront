@@ -7,7 +7,7 @@ import $ from "components/jquery";
 UIkit.use(Icons);
 
 export const init = () => {
-    console.log('Contas initialized');
+    console.log('Contas inicializada');
 };
 
 init();

@@ -3,8 +3,7 @@ import 'uikitcss';
 import UIkit from 'uikit';
 import Icons from 'uikiticonsjs';
 import $ from "components/jquery";
-import { initFiltros } from './filtros';
-// import { initLista } from './lista';
+
 import Toast from "components/toast";
 
 UIkit.use(Icons);
@@ -16,19 +15,75 @@ interface IModelLancamentos {
     };
     urls: {
         buscarLancamentos: string;
+        listarCategorias: string;
+        abrirModalCadastro: string;
+        listarContas: string;
+        cadastrarLancamento: string;
     };
 }
 
 let model: IModelLancamentos;
 
 export const init = (params: IModelLancamentos) => {
+    console.log('Iniciando lançamentos...', params);
     model = params;
-    initFiltros();
+    configurarFiltrosIniciais();
+    carregarCategorias();
+    conectarEventos();
     carregarLancamentos();
 };
 
+function configurarFiltrosIniciais() {
+    const hoje = new Date();
+    $('#filtro-mes').val(hoje.getMonth() + 1);
+    $('#filtro-ano').val(hoje.getFullYear());
+}
+
+function carregarCategorias() {
+    console.log('Carregando categorias...');
+    $.get(model.urls.listarCategorias)
+        .done((categorias: any[]) => {
+            console.log('Categorias carregadas:', categorias);
+            const $select = $('#filtro-categoria');
+            $select.empty();
+            $select.append('<option value="">Todas</option>');
+
+            categorias.forEach(cat => {
+                $select.append(`<option value="${cat.id}">${cat.nome}</option>`);
+            });
+        })
+        .fail((error) => {
+            console.error('Erro ao carregar categorias:', error);
+        });
+}
+
+function conectarEventos() {
+    $('#form-filtros').on('submit', (e) => {
+        e.preventDefault();
+        carregarLancamentos();
+    });
+}
+
+// export function abrirModalCadastro() {
+//     const $placeholder = $("#containerModalAdicionarLancamento");
+
+//     $.get(model.urls.abrirModalCadastro)
+//         .done(function (html) {
+//             $placeholder.html(html);
+
+//             const modal = UIkit.modal("#modal-cadastro-lancamento");
+
+//             modal.show();
+//         })
+//         .fail(function () {
+//             alert("Erro ao abrir modal");
+//         });
+// }
+
 export const carregarLancamentos = () => {
     const filtros = obterFiltros();
+    
+    $('#lista-lancamentos').html('<li class="uk-padding uk-text-center">Carregando...</li>');
     
     $.get(model.urls.buscarLancamentos, filtros)
         .done(function (data) {
@@ -36,7 +91,9 @@ export const carregarLancamentos = () => {
             renderizarLancamentos(data);
         })
         .fail(function (error) {
+            console.error('Erro ao carregar lançamentos:', error);
             Toast.error('Erro ao carregar lançamentos');
+            $('#lista-lancamentos').html('<li class="uk-padding uk-text-center uk-text-muted">Erro ao carregar lançamentos.</li>');
         });
 };
 
@@ -120,5 +177,83 @@ function formatarData(dataStr: string) {
     return data.toLocaleDateString('pt-BR');
 }
 
+function carregarContasModal() {
+    $.get('/cadastros/contas/api/listar')
+        .done((contas: any[]) => {
+            const $select = $('#contaId');
+            $select.empty();
+            $select.append('<option value="">Selecione...</option>');
+
+            contas.forEach(conta => {
+                $select.append(`<option value="${conta.id}">${conta.nome}</option>`);
+            });
+        })
+        .fail(() => {
+            console.error('Erro ao carregar contas');
+        });
+}
+
+function carregarCategoriasModal() {
+    $.get(model.urls.listarCategorias)
+        .done((categorias: any[]) => {
+            const $select = $('#categoriaId');
+            $select.empty();
+            $select.append('<option value="">Selecione...</option>');
+
+            categorias.forEach(cat => {
+                $select.append(`<option value="${cat.id}">${cat.nome}</option>`);
+            });
+        })
+        .fail(() => {
+            console.error('Erro ao carregar categorias');
+        });
+}
+
+function configurarFormularioLancamento() {
+    $('#btn-salvar-lancamento').off('click').on('click', () => {
+        salvarLancamento();
+    });
+
+    const hoje = new Date().toISOString().split('T')[0];
+    $('#dataCompetencia').val(hoje);
+}
+
+function salvarLancamento() {
+    const dados = {
+        descricao: $('#descricao').val(),
+        valor: parseFloat(String($('#valor').val())),
+        dataCompetencia: $('#dataCompetencia').val(),
+        tipo: parseInt(String($('#tipo').val())),
+        categoriaId: parseInt(String($('#categoriaId').val())),
+        contaId: parseInt(String($('#contaId').val())),
+        pago: $('#pago').is(':checked'),
+        observacao: $('#observacao').val()
+    };
+
+    $.post(model.urls.cadastrarLancamento, dados)
+        .done(() => {
+            Toast.success('Lançamento cadastrado com sucesso!');
+            UIkit.modal('#modal-lancamento').hide();
+            carregarLancamentos();
+        })
+        .fail((error) => {
+            Toast.error('Erro ao cadastrar lançamento');
+        });
+}
+
+export const abrirModalCadastro = () => {
+    $.get(model.urls.abrirModalCadastro)
+        .done((html) => {
+            $('#containerModalAdicionarLancamento').html(html);
+            carregarCategoriasModal();
+            carregarContasModal();
+            configurarFormularioLancamento();
+            UIkit.modal('#modal-lancamento').show();
+        })
+        .fail(() => {
+            Toast.error('Erro ao abrir modal de cadastro');
+        });
+};
+
 (window as any).ProvaFront = (window as any).ProvaFront || {};
-(window as any).ProvaFront.lancamentos = { init };
+(window as any).ProvaFront.lancamentos = { init, carregarLancamentos, abrirModalCadastro };

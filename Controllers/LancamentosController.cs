@@ -72,4 +72,10 @@ public class LancamentosController(ILancamentoFinanceiroService lancamentoServic
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpGet("abrirModalNovoLancamento")]
+    public IActionResult AbrirModalCadastro()
+    {
+        return PartialView("_ModalCadastro");
+    }
 }
