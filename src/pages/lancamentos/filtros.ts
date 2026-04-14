@@ -31,7 +31,6 @@ function carregarCategorias() {
 function conectarEventos() {
     $('#form-filtros').on('submit', (e) => {
         e.preventDefault();
-        // Recarregar lançamentos com os filtros aplicados
         (window as any).ProvaFront.lancamentos.carregarLancamentos();
     });
 }
