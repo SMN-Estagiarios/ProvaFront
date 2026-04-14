@@ -1,22 +1,90 @@
-﻿@using ProvaFront.Controllers
+@using ProvaFront.Controllers
 @using ProvaFront.Extensions
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard Financeiro";
 }
+<div class="uk-container uk-margin-large-top">
+    <div class="uk-grid-small uk-child-width-1-3@m" uk-grid>
+        <div>
+            <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+                <span class="uk-text-small uk-text-uppercase uk-text-success">Receitas do Mês</span>
+                <h2 class="uk-margin-remove uk-text-bold text-money" id="resumo-receitas">R$ 0,00</h2>
+            </div>
+        </div>
+        <div>
+            <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+                <span class="uk-text-small uk-text-uppercase uk-text-danger">Despesas do Mês</span>
+                <h2 class="uk-margin-remove uk-text-bold text-money" id="resumo-despesas">R$ 0,00</h2>
+            </div>
+        </div>
+        <div>
+            <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+                <span class="uk-text-small uk-text-uppercase">Saldo Atual</span>
+                <h2 class="uk-margin-remove uk-text-bold text-money" id="resumo-saldo">R$ 0,00</h2>
+            </div>
+        </div>
+    </div>
 
-<div id="teste">
-    Boa sorte!
-    <span uk-icon="heart"></span>
+    <div class="uk-grid-medium uk-margin-medium-top" uk-grid>
+        <div class="uk-width-1-2@m">
+            <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+                <h4 class="uk-text-bold">Despesas por Categoria</h4>
+                <div class="uk-margin" id="container-categorias-grafico">
+                    <p class="uk-text-muted uk-text-small">Carregando dados...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="uk-width-1-2@m">
+            <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+                <h4 class="uk-text-bold">Próximos Vencimentos</h4>
+                <ul class="uk-list uk-list-divider uk-text-small" id="lista-vencimentos">
+                    <li class="uk-text-muted">Carregando vencimentos...</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
-<script src="~/dist/home.entry.js" asp-append-version="true"></script>
-<script>
-    ProvaFront.home.init({
-        urls: {
-            index: '@Url.Action(nameof(HomeController.IndexAsync).ActionName(),
-            nameof(HomeController).ControllerName())',
-            partial: '@Url.Action(nameof(HomeController.ResumoNotasPartial).ActionName(),
-            nameof(HomeController).ControllerName())'
-        }
-    });
-</script>
+<div class="uk-container uk-margin-medium-top">
+    <div class="uk-card uk-card-default uk-card-body uk-margin-bottom uk-padding-small">
+        <form class="uk-grid-small uk-flex-middle" uk-grid id="form-filtros">
+            <div class="uk-width-expand@m">
+                <input class="uk-input" type="month" name="Periodo" id="filtro-periodo">
+            </div>
+            <div class="uk-width-1-4@m">
+                <select class="uk-select" name="Tipo" id="filtro-tipo">
+                    <option value="">Tipo (Todos)</option>
+                    <option value="1">Entrada</option>
+                    <option value="2">Saída</option>
+                </select>
+            </div>
+            <div class="uk-width-auto">
+                <button class="uk-button uk-button-primary" type="submit">Atualizar</button>
+            </div>
+        </form>
+    </div>
+
+    <ul class="uk-list list-financeira uk-margin-remove" id="lista-lancamentos">
+        <li class="uk-visible@m uk-grid-collapse uk-text-bold uk-padding-small uk-background-muted" uk-grid>
+            <div class="uk-width-1-5">Data</div>
+            <div class="uk-width-expand">Descrição / Categoria</div>
+            <div class="uk-width-1-5">Conta</div>
+            <div class="uk-width-1-5">Valor</div>
+        </li>
+    </ul>
+</div>
+
+@section Scripts
+{
+    <script src="~/dist/home.entry.js" asp-append-version="true"></script>
+    <script>
+        ProvaFront.home.init({
+            urls: {
+                resumo: '@Url.Action(nameof(DashboardFinanceiroController.Resumo).ActionName(), nameof(DashboardFinanceiroController).ControllerName())',
+                proximosVencimentos: '@Url.Action(nameof(DashboardFinanceiroController.ProximosVencimentos).ActionName(), nameof(DashboardFinanceiroController).ControllerName())',
+                listarLancamentos: '@Url.Action(nameof(LancamentosController.Listar).ActionName(), nameof(LancamentosController).ControllerName())'
+            }
+        });
+    </script>
+}

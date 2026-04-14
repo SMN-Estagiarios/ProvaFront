@@ -1,0 +1,23 @@
+<div id="modal-editar-conta" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-border-rounded">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 class="uk-modal-title">Editar Conta</h2>
+        
+        <form>
+            <div class="uk-margin">
+                <label class="uk-form-label">Nome da Conta (Origem/Destino)</label>
+                <input class="uk-input" type="text" value="Nubank" placeholder="Ex: Carteira Física">
+            </div>
+            <div class="uk-margin">
+                <label class="uk-form-label">Saldo Inicial</label>
+                <input class="uk-input" type="number" step="0.01" value="1250.00">
+            </div>
+            
+            <div class="uk-text-right uk-margin-large-top">
+                <button class="uk-button uk-button-danger uk-align-left btn-excluir" type="button">Excluir Conta</button>
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+                <button class="uk-button uk-button-primary" type="submit">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>

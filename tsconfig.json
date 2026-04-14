@@ -2,23 +2,39 @@
     "compileOnSave": true,
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
-        "ignoreDeprecations": "6.0",
         "noImplicitAny": false,
         "noEmitOnError": true,
         "removeComments": true,
         "moduleResolution": "node",
         "sourceMap": true,
         "target": "ES6",
+        "lib": [
+            "ES2017",
+            "DOM"
+        ],
         "outDir": "wwwroot/dist",
         "rootDir": "./src/",
         "baseUrl": "./src/",
-        "typeRoots": ["./node_modules/@types", "./src/types"],
+        "typeRoots": [
+            "./node_modules/@types",
+            "./src/types"
+        ],
         "paths": {
-            "@assets": ["./assets"],
-            "@components": ["./components"],
-            "@extensions": ["./extensions"],
-            "@helpers": ["./helpers"],
-            "@styles": ["./styles"]
+            "@assets": [
+                "./assets"
+            ],
+            "@components": [
+                "./components"
+            ],
+            "@extensions": [
+                "./extensions"
+            ],
+            "@helpers": [
+                "./helpers"
+            ],
+            "@styles": [
+                "./styles"
+            ]
         }
     },
     "include": [
