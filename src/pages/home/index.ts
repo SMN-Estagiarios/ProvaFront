@@ -1,4 +1,3 @@
-import "styles/index.less";
 import 'uikitcss';
 import UIkit from 'uikit';
 import Icons from 'uikiticonsjs';
@@ -8,28 +7,10 @@ import Toast from "components/toast";
 UIkit.use(Icons);
 
 interface IModelHome {
-    message?: {
-        error?: string;
-        success?: string;
-    };
     urls: {
         resumo: string;
         proximosVencimentos: string;
         listarLancamentos: string;
-        buscarLancamento: string;
-        cadastrarLancamento: string;
-        editarLancamento: string;
-        excluirLancamento: string;
-        listarCategorias: string;
-        buscarCategoria: string;
-        cadastrarCategoria: string;
-        editarCategoria: string;
-        excluirCategoria: string;
-        listarContas: string;
-        buscarConta: string;
-        cadastrarConta: string;
-        editarConta: string;
-        excluirConta: string;
     };
 }
 
