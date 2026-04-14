@@ -3,8 +3,7 @@ import 'uikitcss';
 import UIkit from 'uikit';
 import Icons from 'uikiticonsjs';
 import $ from "components/jquery";
-
-declare const Toast: any;
+import Toast from "components/toast";
 
 UIkit.use(Icons);
 
@@ -81,9 +80,34 @@ function carregarDashboard() {
 function carregarResumo(ano: string, mes: string) {
     $.get(model.urls.resumo, { ano, mes }, (data) => {
         atualizarCardsResumo(data);
-        renderizarCategorias(data);
-        console.log("dados no carregarResumo", data);
+        carregarDespesasPorCategoria(ano, mes);
+    }).fail((xhr) => Toast.error(xhr.responseText || 'Erro ao carregar resumo'));
+}
+
+function carregarDespesasPorCategoria(ano: string, mes: string) {
+    $.get(model.urls.listarLancamentos, { ano, mes, tipo: 'Saida' }, (lancamentos) => {
+        const despesasPorCategoria = agruparDespesasPorCategoria(lancamentos);
+        renderizarCategorias({ despesasPorCategoria, totalSaidas: calcularTotalDespesas(lancamentos) });
+    }).fail((xhr) => Toast.error(xhr.responseText || 'Erro ao carregar despesas por categoria'));
+}
+
+function agruparDespesasPorCategoria(lancamentos: any[]): any[] {
+    const agrupado: { [key: string]: number } = {};
+
+    lancamentos.forEach((l: any) => {
+        const categoria = l?.categoriaNome || 'Sem categoria';
+        const valor = l?.valor || 0;
+        agrupado[categoria] = (agrupado[categoria] || 0) + valor;
     });
+
+    return Object.keys(agrupado).map(nome => ({
+        nome,
+        valor: agrupado[nome]
+    }));
+}
+
+function calcularTotalDespesas(lancamentos: any[]): number {
+    return lancamentos.reduce((total, l) => total + (l?.valor || 0), 0);
 }
 
 function atualizarCardsResumo(data: any) {
@@ -95,6 +119,8 @@ function atualizarCardsResumo(data: any) {
 }
 
 function renderizarCategorias(data: any) {
+    console.log("Dados que chegam na renderizarCategorias", data);
+    
     const categorias = data?.despesasPorCategoria || [];
     const total = data?.totalSaidas || 0;
 
@@ -156,13 +182,15 @@ function carregarVencimentos() {
 }
 
 function criarItemVencimento(v: any) {
-    const classe = v?.tipo === 1 ? 'uk-label-success' : 'uk-label-danger';
+    const hoje = new Date();
+    const dataVencimento = new Date(v?.dataCompetencia);
+    const classe = dataVencimento < hoje ? 'uk-label-danger' : 'uk-label-success';
 
     return `
         <li class="uk-flex uk-flex-between">
             <span>${v?.descricao || '-'}</span>
             <span class="uk-label ${classe}">
-                ${formatarData(v?.data)}
+                ${formatarData(v?.dataCompetencia)}
             </span>
         </li>
     `;

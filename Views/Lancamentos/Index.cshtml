@@ -1,0 +1,82 @@
+@using ProvaFront.Controllers
+@using ProvaFront.Extensions
+@{
+    ViewData["Title"] = "Lançamentos";
+}
+
+<div class="uk-container">
+    <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
+        <h1 class="uk-margin-remove">Gestão de Lançamentos</h1>
+        <button class="uk-button uk-button-primary" id="btn-novo-lancamento">Novo Lançamento</button>
+    </div>
+
+    <div class="uk-card uk-card-default uk-card-body uk-margin-bottom">
+        <form class="uk-grid-small" uk-grid id="form-filtros">
+            <div class="uk-width-1-2 uk-width-1-4@m">
+                <label class="uk-form-label">Mês</label>
+                <select class="uk-select" id="filtro-mes">
+                    <option value="1">Janeiro</option>
+                    <option value="2">Fevereiro</option>
+                    <option value="3">Março</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Maio</option>
+                    <option value="6">Junho</option>
+                    <option value="7">Julho</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Setembro</option>
+                    <option value="10">Outubro</option>
+                    <option value="11">Novembro</option>
+                    <option value="12">Dezembro</option>
+                </select>
+            </div>
+            <div class="uk-width-1-2 uk-width-1-4@m">
+                <label class="uk-form-label">Ano</label>
+                <input class="uk-input" type="number" id="filtro-ano" value="2024" min="2000" max="2030">
+            </div>
+            <div class="uk-width-1-2 uk-width-1-4@m">
+                <label class="uk-form-label">Tipo</label>
+                <select class="uk-select" id="filtro-tipo">
+                    <option value="">Todos</option>
+                    <option value="1">Receita</option>
+                    <option value="2">Despesa</option>
+                </select>
+            </div>
+            <div class="uk-width-1-2 uk-width-1-4@m">
+                <label class="uk-form-label">Categoria</label>
+                <select class="uk-select" id="filtro-categoria">
+                    <option value="">Todas</option>
+                </select>
+            </div>
+            <div class="uk-width-1-1 uk-width-auto@m uk-flex uk-flex-bottom">
+                <button type="submit" class="uk-button uk-button-default" id="btn-filtrar">Filtrar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="uk-visible@m uk-card uk-card-default uk-padding-small uk-margin-bottom">
+        <div class="uk-flex uk-flex-between uk-flex-middle uk-text-bold">
+            <div class="uk-width-1-5">Data</div>
+            <div class="uk-width-expand">Descrição</div>
+            <div class="uk-width-1-5">Categoria</div>
+            <div class="uk-width-1-5">Conta</div>
+            <div class="uk-width-1-5 uk-text-right">Valor</div>
+            <div class="uk-width-auto">Ações</div>
+        </div>
+    </div>
+
+    <ul class="uk-list uk-list-divider" id="lista-lancamentos">
+
+    </ul>
+</div>
+
+@section Scripts {
+    <script src="~/dist/lancamentos.entry.js" asp-append-version="true"></script>
+
+     <script>
+        ProvaFront.lancamentos.init({
+            urls: {
+                buscarLancamentos: '/gestao/lancamentos/api/listar',
+            }
+        });
+    </script>
+}

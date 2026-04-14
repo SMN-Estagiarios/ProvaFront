@@ -8,6 +8,9 @@ namespace ProvaFront.Controllers;
 public class CategoriasController(ICategoriaFinanceiraService categoriaService) : Controller
 {
     [HttpGet("")]
+    public IActionResult Index() => View();
+
+    [HttpGet("api/listar")]
     public async Task<IActionResult> Listar()
     {
         var itens = await categoriaService.ListarAsync();

@@ -8,6 +8,9 @@ namespace ProvaFront.Controllers;
 public class LancamentosController(ILancamentoFinanceiroService lancamentoService) : Controller
 {
     [HttpGet("")]
+    public IActionResult Index() => View();
+
+    [HttpGet("api/listar")]
     public async Task<IActionResult> Listar([FromQuery] FiltroLancamentoDto filtros)
     {
         var itens = await lancamentoService.ListarAsync(filtros);

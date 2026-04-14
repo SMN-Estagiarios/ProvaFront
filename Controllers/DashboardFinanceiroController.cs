@@ -6,6 +6,9 @@ namespace ProvaFront.Controllers;
 [Route("dashboard")]
 public class DashboardFinanceiroController(IDashboardFinanceiroService dashboardService) : Controller
 {
+    [HttpGet("")]
+    public IActionResult Index() => View();
+
     [HttpGet("resumo")]
     public async Task<IActionResult> Resumo(int? mes, int? ano)
     {
