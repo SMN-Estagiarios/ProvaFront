@@ -1,24 +1,68 @@
 ﻿@using ProvaFront.Controllers
 @using ProvaFront.Extensions
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard Financeiro";
 }
 
-<div id="teste">
-    Boa sorte!
-    <span uk-icon="heart"></span>
+<div class="uk-container uk-margin-top uk-margin-bottom">
+    <h1>Dashboard</h1>
+
+    <div class="uk-grid-small" uk-grid>
+        <div class="uk-width-1-3@m">
+            <div class="uk-card card-receita uk-card-default uk-card-body uk-text-center">
+                <h3 class="uk-card-title">Receitas do mês</h3>
+                <div id="receitaMes" class="uk-text-lead">R$ 0,00</div>
+            </div>
+        </div>
+
+        <div class="uk-width-1-3@m">
+            <div class="uk-card card-despesa uk-card-default uk-card-body uk-text-center">
+                <h3 class="uk-card-title">Despesas do mês</h3>
+                <div id="despesasMes" class="uk-text-lead">R$ 0,00</div>
+            </div>
+        </div>
+
+        <div class="uk-width-1-3@m">
+            <div class="uk-card card-saldo uk-card-default uk-card-body uk-text-center">
+                <h3 class="uk-card-title">Saldo atual</h3>
+                <div id="saldoAtual" class="uk-text-lead">R$ 0,00</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="uk-grid-small uk-margin-top" uk-grid>
+        <div class="uk-width-1-2@m">
+            <div class="uk-card uk-card-default uk-card-body">
+                <h3 class="uk-card-title">Despesas por categoria do mês</h3>
+                <div id="graficoCategorias"></div>
+            </div>
+        </div>
+
+        <div class="uk-width-1-2@m">
+            <div class="uk-card uk-card-default uk-card-body">
+                <h3 class="uk-card-title">Próximos vencimentos</h3>
+                <ul id="listaProximosVencimentos" class="uk-list uk-list-divider"></ul>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
     <script src="~/dist/home.entry.js" asp-append-version="true"></script>
-<script>
-    ProvaFront.home.init({
-        urls: {
-            index: '@Url.Action(nameof(HomeController.IndexAsync).ActionName(),
-            nameof(HomeController).ControllerName())',
-            partial: '@Url.Action(nameof(HomeController.ResumoNotasPartial).ActionName(),
-            nameof(HomeController).ControllerName())'
-        }
-    });
-</script>
+    <script>
+        ProvaFront.home.init({
+            urls: {
+                index: '@Url.Action(nameof(HomeController.IndexAsync).ActionName(),
+                    nameof(HomeController).ControllerName())',
+                partial: '@Url.Action(nameof(HomeController.ResumoNotasPartial).ActionName(),
+                    nameof(HomeController).ControllerName())',
+                resumo: '@Url.Action(nameof(DashboardFinanceiroController.Resumo).ActionName(),
+                    nameof(DashboardFinanceiroController).ControllerName())',
+                proximosVencimentos: '@Url.Action(nameof(DashboardFinanceiroController.ProximosVencimentos).ActionName(),
+                    nameof(DashboardFinanceiroController).ControllerName())',
+                lancamentos: '@Url.Action(nameof(LancamentosController.Listar).ActionName(),
+                    nameof(LancamentosController).ControllerName())'
+            }
+        });
+    </script>
 }

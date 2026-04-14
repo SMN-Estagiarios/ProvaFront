@@ -1,0 +1,88 @@
+@using ProvaFront.Controllers
+@using ProvaFront.Extensions
+@{
+    ViewData["Title"] = "Dashboard Financeiro";
+}
+
+<div class="uk-container uk-margin-top uk-margin-bottom">
+    <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom">
+        <h1 ><span>Cadastro Auxiliar de Contas e Categorias</span></h1>
+        <button class="uk-button uk-button-primary uk-margin-bottom" id="btnCadastrarConta"
+                onclick="ProvaFront.auxiliar.abrirModalCadastro()">
+            Cadastrar
+        </button>
+    </div>
+    <div class="uk-flex uk-gap-small uk-flex-column uk-flex-row@m">
+        <div class="uk-card uk-card-default uk-card-body uk-width-1-2@m uk-margin-bottom uk-margin-right">
+            <h2>Cadastro de Contas</h2>
+            <div>
+                <ul class="uk-card uk-card-default uk-list uk-list-striped list-hover uk-margin-remove">
+                    <li class="uk-text-bold uk-width-1-1 uk-padding-small uk-grid-collapse uk-visible@m linha-borda-grid" uk-grid>
+                       <div class="uk-width-expand uk-text-center@m">
+                            <span class="uk-text-bold uk-text-emphasis uk-text-small">Nome</span>
+                        </div>
+                       <div class="uk-width-expand uk-text-center@m">
+                            <span class="uk-text-bold uk-text-emphasis uk-text-small">Ações</span>
+                        </div>
+                    </li>
+                </ul>
+                <ul class ="uk-card uk-card-default uk-list uk-list-striped list-hover uk-margin-remove" id="listaContas">
+                </ul>
+            </div>
+        </div>
+        <div class="uk-card uk-card-default uk-card-body uk-width-1-2@m uk-margin-bottom">
+            <h2>Cadastro de Categorias</h2>
+            <div>
+                <ul class="uk-card uk-card-default uk-list uk-list-striped list-hover uk-margin-remove">
+                    <li class="uk-text-bold uk-width-1-1 uk-padding-small uk-grid-collapse uk-visible@m linha-borda-grid" uk-grid>
+                        <div class="uk-width-expand uk-text-center@m">
+                            <span class="uk-text-bold uk-text-emphasis uk-text-small">Nome</span>
+                        </div>
+                        <div class="uk-width-expand uk-text-center@m">
+                            <span class="uk-text-bold uk-text-emphasis uk-text-small">Ações</span>
+                        </div>
+                    </li>
+                </ul>
+                <ul class ="uk-card uk-card-default uk-list uk-list-striped list-hover uk-margin-remove" id="listaCategorias">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_ModalCadastro" />
+
+
+@section Scripts {
+    <script src="~/dist/auxiliar.entry.js" asp-append-version="true"></script>
+    <script>
+        ProvaFront.auxiliar.init({
+            urls: {
+                index: '@Url.Action(nameof(HomeController.IndexAsync).ActionName(),
+                    nameof(HomeController).ControllerName())',
+                abrirModalCadastro: '@Url.Action(nameof(AuxiliarController.ModalCadastroAsync).ActionName(),
+                    nameof(AuxiliarController).ControllerName())',
+                cadastrarConta: '@Url.Action(nameof(ContasController.Cadastrar).ActionName(),
+                    nameof(ContasController).ControllerName())',
+                cadastrarCategoria: '@Url.Action(nameof(CategoriasController.Cadastrar).ActionName(),
+                    nameof(CategoriasController).ControllerName())',
+                editarConta: '@Url.Action(nameof(ContasController.Editar).ActionName(),
+                    nameof(ContasController).ControllerName())',
+                editarCategoria: '@Url.Action(nameof(CategoriasController.Editar).ActionName(),
+                    nameof(CategoriasController).ControllerName())',
+                listarConta: '@Url.Action(nameof(ContasController.Listar).ActionName(),
+                    nameof(ContasController).ControllerName())',
+                listarCategoria: '@Url.Action(nameof(CategoriasController.Listar).ActionName(),
+                    nameof(CategoriasController).ControllerName())',
+                buscarConta: '@Url.Action(nameof(ContasController.Buscar).ActionName(),
+                    nameof(ContasController).ControllerName())',
+                buscarCategoria: '@Url.Action(nameof(CategoriasController.Buscar).ActionName(),
+                    nameof(CategoriasController).ControllerName())',
+                excluirConta: '@Url.Action(nameof(ContasController.Excluir).ActionName(),
+                    nameof(ContasController).ControllerName())',
+                excluirCategoria: '@Url.Action(nameof(CategoriasController.Excluir).ActionName(),
+                    nameof(CategoriasController).ControllerName())'
+            }
+        });
+    </script>
+}

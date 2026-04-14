@@ -1,31 +1,29 @@
 {
     "dependencies": {
-        "apexcharts": "^5.10.4",
+        "@types/jqueryui": "^1.12.24",
+        "apexcharts": "^5.3.5",
         "izitoast": "^1.4.0",
-        "jquery": "^4.0.0",
+        "jquery": "^3.7.1",
         "jquery-mask-plugin": "^1.14.16",
-        "jquery-ui": "^1.14.2",
+        "jquery-ui": "^1.14.1",
         "jquery-ui-css": "^1.11.5",
-        "treeselectjs": "^0.14.2",
-        "uikit": "^3.25.14"
+        "treeselectjs": "^0.13.1",
+        "uikit": "^3.23.2"
     },
     "devDependencies": {
-        "@types/jquery": "^4.0.0",
-        "@types/jqueryui": "^1.12.24",
-        "@types/uikit": "^3.23.0",
-        "css-loader": "^7.1.4",
+        "@types/jquery": "^3.5.32",
+        "css-loader": "^7.1.2",
         "file-loader": "^6.2.0",
-        "less": "^4.6.4",
-        "less-loader": "^12.3.2",
+        "less": "^4.2.2",
+        "less-loader": "^12.2.0",
         "style-loader": "^4.0.0",
-        "ts-loader": "^9.5.7",
-        "typescript": "^6.0.2",
-        "webpack": "^5.105.4",
-        "webpack-cli": "^7.0.2"
+        "ts-loader": "^9.5.2",
+        "typescript": "^5.7.3",
+        "webpack": "^5.97.1",
+        "webpack-cli": "^6.0.1"
     },
     "scripts": {
-        "build": "webpack --mode production",
-        "watch": "webpack --watch --mode development",
-        "clean": "rd /s /q dist"
+        "build": "webpack",
+        "watch": "webpack watch --mode development"
     }
 }
