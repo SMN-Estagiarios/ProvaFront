@@ -1,0 +1,53 @@
+<div id="modalCadastroAuxiliar" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-border-rounded uk-margin-auto-vertical uk-width-4-5@s uk-width-3-4@m uk-width-1-2@l">
+        
+        <div class="uk-flex uk-flex-between uk-flex-middle ">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <h2 class="uk-modal-title"id="tituloModalCadastro" ></h2>
+        </div>
+
+        <form id="formLancamento" onsubmit="event.preventDefault(); ProvaFront.auxiliar.salvar(this)">
+            <input type="hidden" id="cadastroId" />
+            <div class="uk-grid-small" uk-grid>
+                <div class="uk-width-1-2@m">
+                    <label class="uk-form-label" for="tipoCadastro">Tipo</label>
+                    <div class="uk-form-controls">
+                        <select class="uk-select" id="tipoCadastro" required name="tipoCadastro">
+                            <option value="1">Contas</option>
+                            <option value="2">Categorias</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="uk-width-1-2@m">
+                    <label class="uk-form-label" for="nome">Nome</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="nome" type="text" required name="nome"/>
+                    </div>
+                </div>
+                <div class="uk-width-1-2@m">
+                    <label class="uk-form-label" for="cor">Cor</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="cor" type="text" required name="cor"/>
+                    </div>
+                </div>
+
+                <div class="uk-width-1-2@m uk-hidden" id="instituicaoContainer">
+                    <label class="uk-form-label" for="instituicao">Instituição</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="instituicao" type="text" name="instituicao"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="uk-flex uk-flex-right uk-gap-small uk-margin-top">
+                <button type="button" class="uk-button uk-button-default uk-modal-close uk-margin-small-right">
+                    Cancelar
+                </button>
+                <button type="submit" class="uk-button uk-button-primary" >
+                    Salvar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

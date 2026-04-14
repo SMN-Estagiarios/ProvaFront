@@ -7,6 +7,17 @@ namespace ProvaFront.Controllers;
 [Route("gestao/lancamentos")]
 public class LancamentosController(ILancamentoFinanceiroService lancamentoService) : Controller
 {
+    [HttpGet("/lancamentos")]
+    public async Task<IActionResult> Index()
+    {
+        return View();
+    }
+    [HttpGet("abrir-modal-lancamento")]
+    public async Task<IActionResult> AbrirModalLancamento()
+    {
+        return PartialView("_ModalLancamentos");
+    }
+
     [HttpGet("")]
     public async Task<IActionResult> Listar([FromQuery] FiltroLancamentoDto filtros)
     {

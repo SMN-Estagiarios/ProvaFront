@@ -27,7 +27,9 @@ module.exports = {
             ],
             runtime: "runtime"
         },
-        home: { import: './src/pages/home/index.ts', dependOn: ['izitoast', 'uikit', 'jquery'] }
+        home: { import: './src/pages/home/index.ts', dependOn: ['izitoast', 'uikit', 'jquery'] },
+        lancamentos: { import: './src/pages/lancamentos/index.ts', dependOn: ['izitoast', 'uikit', 'jquery'] },
+        auxiliar: { import: './src/pages/auxiliar/index.ts', dependOn: ['izitoast', 'uikit', 'jquery'] },
     },
     module: {
         rules: [

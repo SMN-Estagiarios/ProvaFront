@@ -1,3 +1,153 @@
+@color-editar: #ffb700;
+@color-editar-hover: #ffb70087;
+@color-excluir: #d70016;
+@color-excluir-hover: #d7001687;
+@color-fundo: #f5f5f5;
+@color-receita: #EDFBF6;
+@color-text-receita: #32D296;
+@color-despesa: #FEF4F6;
+@color-text-despesa: #F0506E;
+@color-saldo-positivo: #D8EAFC;
+@color-text-saldo-positivo: #1E87F0;
+@color-saldo-critico: #FFF6EE;
+@color-text-saldo-critico: #FAA05A;
+
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.uk-container {
+    height: auto;
+    width: 90%;
+}
+
+nav ul {
+    background: #333;
+    list-style-type: none;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    gap: 20px;
+    padding: 10px 30px;
+    font-size: 25px;
+
+    li {
+        a {
+            text-decoration: none;
+            color: #fefefe;
+            transition: color 0.3s;
+
+            &:hover {
+                color: #007BFF;
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+.uk-icon-button {
+    background: transparent;
+    /* Força a transparência */
+    border-radius: 0;
+
+    /* Remove o formato circular se desejar */
+    &:hover {
+        background: transparent;
+    }
+}
+
+.icon-editar {
+    color: @color-editar;
+    transition: 0.3s;
+
+    &:hover {
+        color: @color-fundo;
+        background-color: @color-editar-hover ;
+        border-radius: 4px;
+    }
+}
+
+.icon-excluir {
+    color: @color-excluir;
+    transition: 0.3s;
+
+    &:hover {
+        color: @color-fundo;
+        background-color: @color-excluir-hover ;
+        border-radius: 4px;
+    }
+}
+
+.card-receita {
+    background-color: @color-receita;
+
+    .uk-card-title {
+        color: @color-text-receita;
+    }
+
+    div {
+        color: @color-text-receita;
+    }
+}
+
+.card-despesa {
+    background: @color-despesa;
+
+    .uk-card-title {
+        color: @color-text-despesa;
+    }
+
+    div {
+        color: @color-text-despesa;
+    }
+}
+
+.card-saldo {
+    &.positivo {
+        background: @color-saldo-positivo;
+
+        .uk-card-title {
+            color: @color-text-saldo-positivo;
+        }
+
+        div {
+            color: @color-text-saldo-positivo;
+        }
+    }
+
+    &.critico {
+        background: @color-saldo-critico;
+
+        .uk-card-title {
+            color: @color-text-saldo-critico;
+        }
+
+        div {
+            color: @color-text-saldo-critico;
+        }
+    }
+
+    &.negativo {
+        background: @color-despesa;
+
+        .uk-card-title {
+            color: @color-text-despesa;
+        }
+
+        div {
+            color: @color-text-despesa;
+        }
+    }
+}
+
+.uk-button {
+    border-radius: 5px;
+}
+
+.uk-header{
+    background: #333;
+
 }
