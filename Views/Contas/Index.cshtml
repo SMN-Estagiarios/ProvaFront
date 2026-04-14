@@ -1,3 +1,5 @@
+@using ProvaFront.Controllers
+@using ProvaFront.Extensions
 @{
     ViewData["Title"] = "Contas";
 }
@@ -37,4 +39,12 @@
 
 @section Scripts {
     <script src="~/dist/contas.entry.js" asp-append-version="true"></script>
+    <script>
+        ProvaFront.contas.init({
+            urls: {
+                listar: '@Url.Action(nameof(ContasController.Listar).ActionName(), nameof(ContasController).ControllerName())',
+                cadastrar: '@Url.Action(nameof(ContasController.Cadastrar).ActionName(), nameof(ContasController).ControllerName())',
+            }
+        });
+    </script>
 }

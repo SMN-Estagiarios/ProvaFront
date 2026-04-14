@@ -1,3 +1,5 @@
+@using ProvaFront.Controllers
+@using ProvaFront.Extensions
 @{
     ViewData["Title"] = "Categorias";
 }
@@ -37,4 +39,12 @@
 
 @section Scripts {
     <script src="~/dist/categorias.entry.js" asp-append-version="true"></script>
+    <script>
+        ProvaFront.categorias.init({
+            urls: {
+                listar: '@Url.Action(nameof(CategoriasController.Listar).ActionName(), nameof(CategoriasController).ControllerName())',
+                cadastrar: '@Url.Action(nameof(CategoriasController.Cadastrar).ActionName(), nameof(CategoriasController).ControllerName())',
+            }
+        });
+    </script>
 }
