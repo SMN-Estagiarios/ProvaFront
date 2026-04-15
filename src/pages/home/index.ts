@@ -20,7 +20,6 @@ export function init(params: IModelHome) {
     model = params;
     configurarFiltrosIniciais();
     carregarDashboard();
-    listarLancamentos();
     configurarEventos();
 }
 
@@ -95,13 +94,9 @@ function atualizarCardsResumo(data: any) {
     $('#resumo-receitas').text(formatarMoeda(data?.totalEntradas || 0));
     $('#resumo-despesas').text(formatarMoeda(data?.totalSaidas || 0));
     $('#resumo-saldo').text(formatarMoeda(data?.saldo || 0));
-    console.log("dados no atualizarCardsResumo", data);
-    
 }
 
 function renderizarCategorias(data: any) {
-    console.log("Dados que chegam na renderizarCategorias", data);
-    
     const categorias = data?.despesasPorCategoria || [];
     const total = data?.totalSaidas || 0;
 
@@ -177,70 +172,10 @@ function criarItemVencimento(v: any) {
     `;
 }
 
-export function listarLancamentos() {
-    const { ano, mes } = obterPeriodo();
-
-    const filtros = {
-        ano,
-        mes,
-        tipo: $('#filtro-tipo').val()
-    };
-
-    $.get(model.urls.listarLancamentos, filtros, (data) => {
-        renderizarLancamentos(data);
-    });
-}
-
-function renderizarLancamentos(lista: any[]) {
-    const header = $('#lista-lancamentos li:first-child');
-
-    $('#lista-lancamentos').empty().append(header);
-
-    if (!Array.isArray(lista) || !lista.length) {
-        $('#lista-lancamentos').append(
-            '<li class="uk-padding uk-text-center uk-text-muted">Nenhum registro encontrado.</li>'
-        );
-        return;
-    }
-
-    lista.forEach((item) => {
-        $('#lista-lancamentos').append(criarItemLancamento(item));
-    });
-}
-
-function criarItemLancamento(l: any) {
-    const valorClass = l?.tipo === 1 ? 'uk-text-success' : 'uk-text-danger';
-
-    return `
-        <li class="uk-card uk-card-default uk-card-body uk-margin-small-bottom uk-padding-small" uk-grid>
-            <div class="uk-width-1-5@m">
-                <span>${formatarData(l?.data)}</span>
-            </div>
-
-            <div class="uk-width-expand@m">
-                <div class="uk-text-bold">${l?.descricao || '-'}</div>
-                <div class="uk-text-meta">${l?.categoriaNome || '-'}</div>
-            </div>
-
-            <div class="uk-width-1-5@m">
-                <span>${l?.contaNome || '-'}</span>
-            </div>
-
-            <div class="uk-width-1-5@m">
-                <span class="${valorClass}">
-                    ${formatarMoeda(l?.valor || 0)}
-                </span>
-            </div>
-        </li>
-    `;
-}
-
-
 function configurarEventos() {
     $('#form-filtros').on('submit', (e) => {
         e.preventDefault();
         carregarDashboard();
-        listarLancamentos();
     });
 }
 
