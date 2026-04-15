@@ -7,6 +7,12 @@ import Toast from "components/toast";
 
 UIkit.use(Icons);
 
+interface ICategoria {
+    id: number;
+    nome: string;
+    cor?: string;
+}
+
 interface IModelCategorias {
     urls: {
         listar: string;
@@ -31,7 +37,7 @@ function configurarEventos() {
 
 export const carregarCategorias = () => {
     $.get(model.urls.listar)
-        .done((categorias: any[]) => {
+        .done((categorias: ICategoria[]) => {
             renderizarCategorias(categorias);
         })
         .fail(() => {
@@ -39,28 +45,28 @@ export const carregarCategorias = () => {
         });
 };
 
-function renderizarCategorias(lista: any[]) {
+function renderizarCategorias(categorias: ICategoria[]) {
     const $tbody = $('#lista-categorias');
     $tbody.empty();
 
-    if (!Array.isArray(lista) || !lista.length) {
+    if (!Array.isArray(categorias) || !categorias.length) {
         $tbody.append('<tr><td colspan="2" class="uk-text-center uk-text-muted">Nenhuma categoria encontrada.</td></tr>');
         return;
     }
 
-    lista.forEach((cat) => {
+    categorias.forEach((categoria: ICategoria) => {
         $tbody.append(`
             <tr>
-                <td>${cat?.nome || '-'}</td>
+                <td>${categoria?.nome || '-'}</td>
             </tr>
         `);
     });
 }
 
 function cadastrarCategoria() {
-    const nome = String($('#nome-categoria').val() || '').trim();
+    const $nome = String($('#nome-categoria').val() || '').trim();
 
-    if (!nome) {
+    if (!$nome) {
         Toast.warning('Informe o nome da categoria');
         return;
     }
@@ -69,16 +75,14 @@ function cadastrarCategoria() {
         url: model.urls.cadastrar,
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ nome }),
+        data: JSON.stringify({ $nome }),
         success: () => {
             Toast.success('Categoria cadastrada com sucesso!');
             $('#nome-categoria').val('');
             carregarCategorias();
         },
-        error: (xhr) => {
-            const mensagem = xhr.responseText || 'Erro ao cadastrar categoria';
-            console.error('Erro ao cadastrar categoria:', mensagem);
-            Toast.error(mensagem);
+        error: () => {
+            Toast.error("Erro ao cadastrar categoria");
         }
     });
 }

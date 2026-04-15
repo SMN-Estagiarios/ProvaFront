@@ -22,10 +22,36 @@ interface IModelLancamentos {
     };
 }
 
+interface ICategoria {
+    id: number;
+    nome: string;
+    cor?: string;
+}
+
+interface IConta {
+    id: number;
+    nome: string;
+    instituicao?: string;
+    cor?: string;
+}
+
+interface ILancamento {
+    id: number;
+    descricao: string;
+    valor: number;
+    dataCompetencia: string;
+    tipo: number;
+    categoriaId: number;
+    contaId: number;
+    pago: boolean;
+    observacao?: string;
+    categoriaNome?: string;
+    contaNome?: string;
+}
+
 let model: IModelLancamentos;
 
 export const init = (params: IModelLancamentos) => {
-    console.log('Iniciando lançamentos...', params);
     model = params;
     configurarFiltrosIniciais();
     carregarCategorias();
@@ -40,20 +66,18 @@ function configurarFiltrosIniciais() {
 }
 
 function carregarCategorias() {
-    console.log('Carregando categorias...');
     $.get(model.urls.listarCategorias)
-        .done((categorias: any[]) => {
-            console.log('Categorias carregadas:', categorias);
+        .done((categorias: ICategoria[]) => {
             const $select = $('#filtro-categoria');
             $select.empty();
             $select.append('<option value="">Todas</option>');
 
-            categorias.forEach(cat => {
-                $select.append(`<option value="${cat.id}">${cat.nome}</option>`);
+            categorias.forEach(categoria => {
+                $select.append(`<option value="${categoria.id}">${categoria.nome}</option>`);
             });
         })
-        .fail((error) => {
-            console.error('Erro ao carregar categorias:', error);
+        .fail(() => {
+            Toast.error('Erro ao carregar categorias:');
         });
 }
 
@@ -64,35 +88,17 @@ function conectarEventos() {
     });
 }
 
-// export function abrirModalCadastro() {
-//     const $placeholder = $("#containerModalAdicionarLancamento");
-
-//     $.get(model.urls.abrirModalCadastro)
-//         .done(function (html) {
-//             $placeholder.html(html);
-
-//             const modal = UIkit.modal("#modal-cadastro-lancamento");
-
-//             modal.show();
-//         })
-//         .fail(function () {
-//             alert("Erro ao abrir modal");
-//         });
-// }
-
 export const carregarLancamentos = () => {
     const filtros = obterFiltros();
-    
+
     $('#lista-lancamentos').html('<li class="uk-padding uk-text-center">Carregando...</li>');
-    
+
     $.get(model.urls.buscarLancamentos, filtros)
-        .done(function (data) {
-            console.log("Lançamentos que chegam na Gestão", data);
-            renderizarLancamentos(data);
+        .done(function (lancamentos: ILancamento[]) {
+            renderizarLancamentos(lancamentos);
         })
-        .fail(function (error) {
-            console.error('Erro ao carregar lançamentos:', error);
-            Toast.error('Erro ao carregar lançamentos');
+        .fail(function () {
+            Toast.error('Erro ao carregar lançamentos:');
             $('#lista-lancamentos').html('<li class="uk-padding uk-text-center uk-text-muted">Erro ao carregar lançamentos.</li>');
         });
 };
@@ -106,57 +112,54 @@ function obterFiltros() {
     };
 }
 
-function renderizarLancamentos(lista: any[]) {
-
+function renderizarLancamentos(lancamentos: ILancamento[]) {
     const $lista = $('#lista-lancamentos');
     $lista.empty();
 
-    if (!Array.isArray(lista) || !lista.length) {
+    if (!Array.isArray(lancamentos) || !lancamentos.length) {
         $lista.append('<li class="uk-padding uk-text-center uk-text-muted">Nenhum registro encontrado.</li>');
         return;
     }
 
-    lista.forEach(item => {
-        $lista.append(criarItemLancamento(item));
+    lancamentos.forEach(lancamento => {
+        $lista.append(criarItemLancamento(lancamento));
     });
 }
 
-function criarItemLancamento(l: any) {
-    console.log(l);
-    
-    const valorClass = l?.tipo === 1 ? 'uk-text-success' : 'uk-text-danger';
+function criarItemLancamento(lancamento: ILancamento) {
+    const valorClass = lancamento?.tipo === 1 ? 'uk-text-success' : 'uk-text-danger';
 
     return `
         <li class="uk-card uk-card-default uk-card-body uk-padding-small uk-margin-small-bottom">
             <div class="uk-grid-small uk-flex-middle" uk-grid>
                 <div class="uk-width-1-2 uk-width-1-5@m">
                     <span class="uk-text-bold uk-text-meta uk-hidden@m">Data</span>
-                    <div class="uk-text-truncate">${formatarData(l?.dataCompetencia)}</div>
+                    <div class="uk-text-truncate">${formatarData(lancamento?.dataCompetencia)}</div>
                 </div>
-                
+
                 <div class="uk-width-1-2 uk-width-expand@m">
                     <span class="uk-text-bold uk-text-meta uk-hidden@m">Descrição</span>
-                    <div class="uk-text-bold uk-text-truncate">${l?.descricao || '-'}</div>
+                    <div class="uk-text-bold uk-text-truncate">${lancamento?.descricao || '-'}</div>
                 </div>
 
                 <div class="uk-width-1-2 uk-width-1-5@m">
                     <span class="uk-text-bold uk-text-meta uk-hidden@m">Categoria</span>
-                    <div class="uk-text-truncate">${l?.categoriaNome || '-'}</div>
+                    <div class="uk-text-truncate">${lancamento?.categoriaNome || '-'}</div>
                 </div>
 
                 <div class="uk-width-1-2 uk-width-1-5@m">
                     <span class="uk-text-bold uk-text-meta uk-hidden@m">Conta</span>
-                    <div class="uk-text-truncate">${l?.contaNome || '-'}</div>
+                    <div class="uk-text-truncate">${lancamento?.contaNome || '-'}</div>
                 </div>
 
                 <div class="uk-width-1-1 uk-width-1-5@m uk-text-right@m">
                     <span class="uk-text-bold uk-text-meta uk-hidden@m">Valor</span>
-                    <div class="${valorClass} uk-text-bold">${formatarMoeda(l?.valor || 0)}</div>
+                    <div class="${valorClass} uk-text-bold">${formatarMoeda(lancamento?.valor || 0)}</div>
                 </div>
 
                 <div class="uk-width-1-1 uk-width-auto@m uk-flex uk-flex-center uk-flex-right@m">
                     <div class="uk-button-group">
-                        <button class="uk-button uk-button-text uk-margin-small-right" uk-icon="pencil" title="Editar"></button>
+                        <button class="uk-button uk-button-text uk-margin-small-right uk-margin-small-left" uk-icon="pencil" title="Editar"></button>
                         <button class="uk-button uk-button-text uk-text-danger" uk-icon="trash" title="Excluir"></button>
                     </div>
                 </div>
@@ -178,8 +181,8 @@ function formatarData(dataStr: string) {
 }
 
 function carregarContasModal() {
-    $.get('/cadastros/contas/api/listar')
-        .done((contas: any[]) => {
+    $.get(model.urls.listarContas)
+        .done((contas: IConta[]) => {
             const $select = $('#contaId');
             $select.empty();
             $select.append('<option value="">Selecione...</option>');
@@ -189,23 +192,23 @@ function carregarContasModal() {
             });
         })
         .fail(() => {
-            console.error('Erro ao carregar contas');
+            Toast.error('Erro ao carregar contas');
         });
 }
 
 function carregarCategoriasModal() {
     $.get(model.urls.listarCategorias)
-        .done((categorias: any[]) => {
+        .done((categorias: ICategoria[]) => {
             const $select = $('#categoriaId');
             $select.empty();
             $select.append('<option value="">Selecione...</option>');
 
-            categorias.forEach(cat => {
-                $select.append(`<option value="${cat.id}">${cat.nome}</option>`);
+            categorias.forEach(categoria => {
+                $select.append(`<option value="${categoria.id}">${categoria.nome}</option>`);
             });
         })
         .fail(() => {
-            console.error('Erro ao carregar categorias');
+            Toast.error('Erro ao carregar categorias');
         });
 }
 
@@ -240,10 +243,8 @@ function salvarLancamento() {
             UIkit.modal('#modal-lancamento').hide();
             carregarLancamentos();
         },
-        error: (xhr) => {
-            const mensagem = xhr.responseText || 'Erro ao cadastrar lançamento';
-            console.error('Erro ao salvar lançamento:', mensagem);
-            Toast.error(mensagem);
+        error: () => {
+            Toast.error('Erro ao cadastrar lançamento');
         }
     });
 }
@@ -261,6 +262,3 @@ export const abrirModalCadastro = () => {
             Toast.error('Erro ao abrir modal de cadastro');
         });
 };
-
-// (window as any).ProvaFront = (window as any).ProvaFront || {};
-// (window as any).ProvaFront.lancamentos = { init, carregarLancamentos, abrirModalCadastro };

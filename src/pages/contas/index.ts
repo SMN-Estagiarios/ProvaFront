@@ -7,6 +7,13 @@ import Toast from "components/toast";
 
 UIkit.use(Icons);
 
+interface IConta {
+    id: number;
+    nome: string;
+    instituicao?: string;
+    cor?: string;
+}
+
 interface IModelContas {
     urls: {
         listar: string;
@@ -31,7 +38,7 @@ function configurarEventos() {
 
 export const carregarContas = () => {
     $.get(model.urls.listar)
-        .done((contas: any[]) => {
+        .done((contas: IConta[]) => {
             renderizarContas(contas);
         })
         .fail(() => {
@@ -39,16 +46,16 @@ export const carregarContas = () => {
         });
 };
 
-function renderizarContas(lista: any[]) {
+function renderizarContas(contas: IConta[]) {
     const $tbody = $('#lista-contas');
     $tbody.empty();
 
-    if (!Array.isArray(lista) || !lista.length) {
+    if (!Array.isArray(contas) || !contas.length) {
         $tbody.append('<tr><td colspan="2" class="uk-text-center uk-text-muted">Nenhuma conta encontrada.</td></tr>');
         return;
     }
 
-    lista.forEach((conta) => {
+    contas.forEach((conta: IConta) => {
         $tbody.append(`
             <tr>
                 <td>${conta?.nome || '-'}</td>
@@ -58,9 +65,8 @@ function renderizarContas(lista: any[]) {
 }
 
 function cadastrarConta() {
-    const nome = String($('#nome-conta').val() || '').trim();
-
-    if (!nome) {
+    const $nome = String($('#nome-conta').val() || '').trim();
+    if (!$nome) {
         Toast.warning('Informe o nome da conta');
         return;
     }
@@ -69,16 +75,14 @@ function cadastrarConta() {
         url: model.urls.cadastrar,
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ nome }),
+        data: JSON.stringify({ $nome }),
         success: () => {
             Toast.success('Conta cadastrada com sucesso!');
             $('#nome-conta').val('');
             carregarContas();
         },
-        error: (xhr) => {
-            const mensagem = xhr.responseText || 'Erro ao cadastrar conta';
-            console.error('Erro ao cadastrar conta:', mensagem);
-            Toast.error(mensagem);
+        error: () => {
+            Toast.error("Erro ao cadastrar conta");
         }
     });
 }
