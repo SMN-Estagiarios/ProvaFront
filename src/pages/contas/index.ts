@@ -52,9 +52,6 @@ function renderizarContas(lista: any[]) {
         $tbody.append(`
             <tr>
                 <td>${conta?.nome || '-'}</td>
-                <td>
-                    <button class="uk-button uk-button-text uk-text-danger" type="button">Excluir</button>
-                </td>
             </tr>
         `);
     });
@@ -85,6 +82,3 @@ function cadastrarConta() {
         }
     });
 }
-
-(window as any).ProvaFront = (window as any).ProvaFront || {};
-(window as any).ProvaFront.contas = { init, carregarContas };
