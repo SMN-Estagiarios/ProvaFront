@@ -13,7 +13,52 @@ interface IModelHome {
         listarLancamentos: string;
     };
 }
+interface IResumo {
+    quantidadePendentes: number
+    saldo: number
+    totalEntradas: number
+    totalSaidas: number
+}
 
+interface ILancamento {
+    categoriaId: number
+    categoriaNome: string
+    contaId: number
+    contaNome: string
+    dataCompetencia: string
+    descricao: string
+    id: number
+    observacao: string
+    pago: boolean
+    tipo: number | string
+    valor: number
+}
+
+interface ILancamentoAgrupado {
+    nome: string;
+    valor: number;
+}
+
+interface IDespesaPorCategoria {
+    nome: string;
+    valor: number;
+}
+interface IResumoDespesas {
+    despesasPorCategoria: IDespesaPorCategoria[];
+    totalSaidas: number;
+}
+interface ICategoria {
+    nome: string
+    valor: number;
+}
+interface IVencimento {
+    categoriaNome: string
+    contaNome: string
+    dataCompetencia: string
+    descricao: string
+    id: number
+    valor: number
+}
 let model: IModelHome;
 
 export function init(params: IModelHome) {
@@ -58,25 +103,31 @@ function carregarDashboard() {
 }
 
 function carregarResumo(ano: string, mes: string) {
-    $.get(model.urls.resumo, { ano, mes }, (data) => {
-        atualizarCardsResumo(data);
+    $.get(model.urls.resumo, { ano, mes }, (resumo: IResumo ) => {
+        atualizarCardsResumo(resumo);
         carregarDespesasPorCategoria(ano, mes);
     }).fail((xhr) => Toast.error(xhr.responseText || 'Erro ao carregar resumo'));
 }
 
 function carregarDespesasPorCategoria(ano: string, mes: string) {
-    $.get(model.urls.listarLancamentos, { ano, mes, tipo: 'Saida' }, (lancamentos) => {
+    $.get(model.urls.listarLancamentos, { ano, mes, tipo: 'Saida' }, (lancamentos: ILancamento[]) => {
+
         const despesasPorCategoria = agruparDespesasPorCategoria(lancamentos);
-        renderizarCategorias({ despesasPorCategoria, totalSaidas: calcularTotalDespesas(lancamentos) });
+
+        renderizarCategorias({
+            despesasPorCategoria,
+            totalSaidas: calcularTotalDespesas(lancamentos)
+        });
+
     }).fail((xhr) => Toast.error(xhr.responseText || 'Erro ao carregar despesas por categoria'));
 }
 
-function agruparDespesasPorCategoria(lancamentos: any[]): any[] {
+function agruparDespesasPorCategoria(lancamentos: ILancamento[]): ILancamentoAgrupado[] {
     const agrupado: { [key: string]: number } = {};
 
-    lancamentos.forEach((l: any) => {
-        const categoria = l?.categoriaNome || 'Sem categoria';
-        const valor = l?.valor || 0;
+    lancamentos.forEach((lancamento: ILancamento) => {
+        const categoria = lancamento.categoriaNome || 'Sem categoria';
+        const valor = lancamento.valor || 0;
         agrupado[categoria] = (agrupado[categoria] || 0) + valor;
     });
 
@@ -86,19 +137,19 @@ function agruparDespesasPorCategoria(lancamentos: any[]): any[] {
     }));
 }
 
-function calcularTotalDespesas(lancamentos: any[]): number {
-    return lancamentos.reduce((total, l) => total + (l?.valor || 0), 0);
+function calcularTotalDespesas(lancamentos: ILancamento[]): number {
+    return lancamentos.reduce((total, lancamento) => total + (lancamento?.valor || 0), 0);
 }
 
-function atualizarCardsResumo(data: any) {
-    $('#resumo-receitas').text(formatarMoeda(data?.totalEntradas || 0));
-    $('#resumo-despesas').text(formatarMoeda(data?.totalSaidas || 0));
-    $('#resumo-saldo').text(formatarMoeda(data?.saldo || 0));
+function atualizarCardsResumo(resumo: IResumo) {
+    $('#resumo-receitas').text(formatarMoeda(resumo?.totalEntradas || 0));
+    $('#resumo-despesas').text(formatarMoeda(resumo?.totalSaidas || 0));
+    $('#resumo-saldo').text(formatarMoeda(resumo?.saldo || 0));
 }
 
-function renderizarCategorias(data: any) {
-    const categorias = data?.despesasPorCategoria || [];
-    const total = data?.totalSaidas || 0;
+function renderizarCategorias(despesa: IResumoDespesas) {
+    const categorias = despesa?.despesasPorCategoria || [];
+    const total = despesa?.totalSaidas || 0;
 
     if (!categorias.length) {
         $('#container-categorias-grafico').html(
@@ -116,11 +167,11 @@ function renderizarCategorias(data: any) {
 
     let html = '';
 
-    categorias.forEach((cat: any) => {
-        const valor = cat?.valor || 0;
+    categorias.forEach((categoria: ICategoria) => {
+        const valor = categoria?.valor || 0;
         const percentual = (valor / total) * 100;
 
-        html += criarItemCategoria(cat?.nome, valor, percentual);
+        html += criarItemCategoria(categoria?.nome, valor, percentual);
     });
 
     $('#container-categorias-grafico').html(html);
@@ -139,8 +190,8 @@ function criarItemCategoria(nome: string, valor: number, percentual: number) {
 }
 
 function carregarVencimentos() {
-    $.get(model.urls.proximosVencimentos, (data) => {
-        if (!Array.isArray(data) || !data.length) {
+    $.get(model.urls.proximosVencimentos, (vencimentos: IVencimento[]) => {
+        if (!Array.isArray(vencimentos) || !vencimentos.length) {
             $('#lista-vencimentos').html(
                 '<li class="uk-text-muted">Nenhum vencimento pendente.</li>'
             );
@@ -149,25 +200,77 @@ function carregarVencimentos() {
 
         let html = '';
 
-        data.forEach((v: any) => {
-            html += criarItemVencimento(v);
+        vencimentos.forEach((vencimento: IVencimento) => {
+            html += criarItemVencimento(vencimento);
         });
 
         $('#lista-vencimentos').html(html);
     });
 }
 
-function criarItemVencimento(v: any) {
+function criarItemVencimento(vencimento: IVencimento) {
     const hoje = new Date();
-    const dataVencimento = new Date(v?.dataCompetencia);
+    const dataVencimento = new Date(vencimento.dataCompetencia);
+
     const classe = dataVencimento < hoje ? 'uk-label-danger' : 'uk-label-success';
 
     return `
-        <li class="uk-flex uk-flex-between">
-            <span>${v?.descricao || '-'}</span>
-            <span class="uk-label ${classe}">
-                ${formatarData(v?.dataCompetencia)}
-            </span>
+        <li>
+            <div class="uk-grid-small uk-flex-middle uk-visible@m" uk-grid>
+                <div class="uk-width-1-3">
+                    <span class="uk-text-truncate uk-text-emphasis uk-display-block">
+                        ${vencimento.descricao}
+                    </span>
+                </div>
+
+                <div class="uk-width-1-4">
+                    <span class="uk-text-muted uk-text-small">
+                        ${vencimento.categoriaNome}
+                    </span>
+                </div>
+
+                <div class="uk-width-1-5 uk-text-center">
+                    <span class="uk-text-bold">
+                        R$ ${vencimento.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </span>
+                </div>
+
+                <div class="uk-width-expand uk-text-right">
+                    <span class="uk-label ${classe}">
+                        ${formatarData(vencimento.dataCompetencia)}
+                    </span>
+                </div>
+            </div>
+
+            <div class="uk-hidden@m uk-card uk-card-muted uk-card-body uk-border-rounded uk-padding-small">
+                <div class="uk-margin-small-bottom">
+                    <div class="uk-text-bold uk-text-small">Descrição</div>
+                    <div class="uk-text-emphasis">
+                        ${vencimento.descricao}
+                    </div>
+                </div>
+
+                <div class="uk-margin-small-bottom">
+                    <div class="uk-text-bold uk-text-small">Categoria</div>
+                    <div class="uk-text-muted">
+                        ${vencimento.categoriaNome}
+                    </div>
+                </div>
+
+                <div class="uk-margin-small-bottom">
+                    <div class="uk-text-bold uk-text-small">Valor</div>
+                    <div class="uk-text-bold">
+                        R$ ${vencimento.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="uk-text-bold uk-text-small">Data</div>
+                    <span class="uk-label ${classe}">
+                        ${formatarData(vencimento.dataCompetencia)}
+                    </span>
+                </div>
+            </div>
         </li>
     `;
 }
@@ -187,10 +290,12 @@ function formatarMoeda(valor: number) {
 }
 
 function formatarData(dataStr?: string) {
-    if (!dataStr) return '-';
+    if (!dataStr)
+        return '-';
 
     const data = new Date(dataStr);
-    if (isNaN(data.getTime())) return '-';
+    if (isNaN(data.getTime()))
+        return '-';
 
     return data.toLocaleDateString('pt-BR');
 }
