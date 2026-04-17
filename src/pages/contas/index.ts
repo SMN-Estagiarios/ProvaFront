@@ -75,7 +75,7 @@ function cadastrarConta() {
         url: model.urls.cadastrar,
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ $nome }),
+        data: JSON.stringify({nome: $nome }),
         success: () => {
             Toast.success('Conta cadastrada com sucesso!');
             $('#nome-conta').val('');

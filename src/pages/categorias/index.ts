@@ -75,13 +75,15 @@ function cadastrarCategoria() {
         url: model.urls.cadastrar,
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ $nome }),
+        data: JSON.stringify({nome: $nome }),
         success: () => {
             Toast.success('Categoria cadastrada com sucesso!');
             $('#nome-categoria').val('');
             carregarCategorias();
         },
-        error: () => {
+        error: (xhr) => {
+            console.log(xhr);
+
             Toast.error("Erro ao cadastrar categoria");
         }
     });
