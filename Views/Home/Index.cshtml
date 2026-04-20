@@ -1,24 +1,69 @@
-﻿@using ProvaFront.Controllers
+@using ProvaFront.Controllers
 @using ProvaFront.Extensions
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard Financeiro";
 }
+<div class="uk-container uk-margin-large-top">
+    <div class="uk-grid-small uk-child-width-1-3@m" uk-grid>
+        <div>
+            <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+                <span class="uk-text-small uk-text-uppercase uk-text-success">Receitas do Mês</span>
+                <h2 class="uk-margin-remove uk-text-bold text-money" id="resumo-receitas">R$ 0,00</h2>
+            </div>
+        </div>
+        <div>
+            <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+                <span class="uk-text-small uk-text-uppercase uk-text-danger">Despesas do Mês</span>
+                <h2 class="uk-margin-remove uk-text-bold text-money" id="resumo-despesas">R$ 0,00</h2>
+            </div>
+        </div>
+        <div>
+            <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+                <span class="uk-text-small uk-text-uppercase">Saldo Atual</span>
+                <h2 class="uk-margin-remove uk-text-bold text-money" id="resumo-saldo">R$ 0,00</h2>
+            </div>
+        </div>
+    </div>
 
-<div id="teste">
-    Boa sorte!
-    <span uk-icon="heart"></span>
+    <div class="uk-grid-medium uk-margin-medium-top" uk-grid>
+        <div class="uk-width-1-2@m">
+            <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+                <h4 class="uk-text-bold">Despesas por Categoria</h4>
+                <div class="uk-margin" id="container-categorias-grafico">
+                    <p class="uk-text-muted uk-text-small">Carregando dados...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="uk-width-1-2@m">
+    <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+        <h4 class="uk-text-bold">Próximos Vencimentos</h4>
+
+        <div class="uk-grid-small uk-child-width-expand uk-text-bold uk-text-uppercase uk-text-small uk-background-muted uk-padding-vertical uk-border-rounded uk-margin-small-bottom uk-visible@m" uk-grid>
+            <div class="uk-width-1-3">Descrição</div>
+            <div class="uk-width-1-4">Categoria</div>
+            <div class="uk-width-1-5 uk-text-center">Valor</div>
+            <div class="uk-width-expand uk-text-right">Data</div>
+        </div>
+
+        <ul class="uk-list uk-list-divider uk-text-small" id="lista-vencimentos">
+            <li class="uk-text-muted">Carregando vencimentos...</li>
+        </ul>
+    </div>
+</div>
+    </div>
 </div>
 
-@section Scripts {
+@section Scripts
+{
     <script src="~/dist/home.entry.js" asp-append-version="true"></script>
-<script>
-    ProvaFront.home.init({
-        urls: {
-            index: '@Url.Action(nameof(HomeController.IndexAsync).ActionName(),
-            nameof(HomeController).ControllerName())',
-            partial: '@Url.Action(nameof(HomeController.ResumoNotasPartial).ActionName(),
-            nameof(HomeController).ControllerName())'
-        }
-    });
-</script>
+    <script>
+        ProvaFront.home.init({
+            urls: {
+                resumo: '@Url.Action(nameof(DashboardFinanceiroController.Resumo).ActionName(), nameof(DashboardFinanceiroController).ControllerName())',
+                proximosVencimentos: '@Url.Action(nameof(DashboardFinanceiroController.ProximosVencimentos).ActionName(), nameof(DashboardFinanceiroController).ControllerName())',
+                listarLancamentos: '@Url.Action(nameof(LancamentosController.Listar).ActionName(), nameof(LancamentosController).ControllerName())'
+            }
+        });
+    </script>
 }

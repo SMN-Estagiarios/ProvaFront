@@ -1,3 +1,26 @@
-<nav>
-    Partial Nav
+@using ProvaFront.Controllers
+@using ProvaFront.Extensions
+<nav class="uk-navbar-container uk-margin" uk-navbar>
+    <div class="uk-navbar-left  uk-margin-medium-left">
+        <a class="uk-navbar-item uk-logo" href="/">Dashboard</a>
+        <ul class="uk-navbar-nav">
+            <li>
+    <a href="@Url.Action(nameof(LancamentosController.Index), nameof(LancamentosController).ControllerName())">
+        Lançamentos
+    </a>
+</li>
+
+<li>
+    <a href="@Url.Action(nameof(CategoriasController.Index), nameof(CategoriasController).ControllerName())">
+        Categorias
+    </a>
+</li>
+
+<li>
+    <a href="@Url.Action(nameof(ContasController.Index), nameof(ContasController).ControllerName())">
+        Contas
+    </a>
+</li>
+        </ul>
+    </div>
 </nav>

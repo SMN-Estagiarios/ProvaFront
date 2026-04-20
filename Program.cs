@@ -1,8 +1,18 @@
+using ProvaFront.Interfaces.Services;
+using ProvaFront.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation();
+
+builder.Services.AddSingleton<FinanceiroMemoriaStore>();
+
+builder.Services.AddScoped<ICategoriaFinanceiraService, CategoriaFinanceiraService>();
+builder.Services.AddScoped<IContaFinanceiraService, ContaFinanceiraService>();
+builder.Services.AddScoped<ILancamentoFinanceiroService, LancamentoFinanceiroService>();
+builder.Services.AddScoped<IDashboardFinanceiroService, DashboardFinanceiroService>();
 
 var app = builder.Build();
 
